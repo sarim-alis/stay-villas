@@ -27,6 +27,52 @@ const AllRooms = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const { facilityIcons, navigate, rooms, currency } = useAppContext();
+
+    // Dummy data for testing
+    const dummyRooms = [
+        {
+            _id: '1',
+            roomType: 'Luxury Room',
+            pricePerNight: 1200,
+            createdAt: '2024-01-15',
+            images: ['https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'],
+            hotel: {
+                name: 'Grand Palace Hotel',
+                city: 'Paris',
+                address: '123 Champs-Élysées, Paris, France'
+            },
+            amenities: ['Free Wifi', 'Free Breakfast', 'Room Service']
+        },
+        {
+            _id: '2',
+            roomType: 'Double Bed',
+            pricePerNight: 800,
+            createdAt: '2024-02-20',
+            images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800'],
+            hotel: {
+                name: 'Ocean View Resort',
+                city: 'Maldives',
+                address: '456 Beach Road, Malé, Maldives'
+            },
+            amenities: ['Free Wifi', 'Pool', 'Mountain View']
+        },
+        {
+            _id: '3',
+            roomType: 'Family Suite',
+            pricePerNight: 1500,
+            createdAt: '2024-03-10',
+            images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800'],
+            hotel: {
+                name: 'Mountain Lodge',
+                city: 'Switzerland',
+                address: '789 Alpine Street, Zurich, Switzerland'
+            },
+            amenities: ['Free Breakfast', 'Room Service', 'Mountain View']
+        }
+    ];
+
+    // Use dummy data if rooms array is empty
+    const displayRooms = rooms.length > 0 ? rooms : dummyRooms;
     const [openFilters, setOpenFilters] = useState(false);
 
     // State for managing the selected filters
@@ -110,10 +156,10 @@ const AllRooms = () => {
 
     // Filter and sort rooms based on the selected filters and sort option
     const filteredRooms = useMemo(() => {
-        return rooms
+        return displayRooms
             .filter(room => matchesRoomType(room) && matchesPriceRange(room) && filterDestination(room))
             .sort(sortRooms);
-    }, [rooms, selectedFilters, selectedSort, searchParams]);
+    }, [displayRooms, selectedFilters, selectedSort, searchParams]);
 
     // Clear all filters
     const clearFilters = () => {
