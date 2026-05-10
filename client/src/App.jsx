@@ -17,9 +17,7 @@ import Loader from './components/Loader'
 
 const App = () => {
 
-  // Check Is Route Starts With Owner
   const isOwnerPath = useLocation().pathname.includes("owner");
-
   const { showHotelReg } = useAppContext();
 
   return (
