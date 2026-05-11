@@ -9,6 +9,29 @@ const RoomDetails = () => {
     const { id } = useParams();
     const { facilityIcons, rooms, getToken, axios, navigate } = useAppContext();
 
+    // Dummy room data for testing
+    const dummyRoom = {
+        _id: '1',
+        roomType: 'Luxury Room',
+        pricePerNight: 1200,
+        createdAt: '2024-01-15',
+        images: [
+            'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800',
+            'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800',
+            'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800',
+            'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800'
+        ],
+        hotel: {
+            name: 'Grand Palace Hotel',
+            city: 'Paris',
+            address: '123 Champs-Élysées, Paris, France',
+            owner: {
+                image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200'
+            }
+        },
+        amenities: ['Free WiFi', 'Free Breakfast', 'Room Service', 'Mountain View', 'Pool Access']
+    };
+
     const [room, setRoom] = useState(null);
     const [mainImage, setMainImage] = useState(null);
     const [checkInDate, setCheckInDate] = useState(null);
@@ -66,10 +89,12 @@ const RoomDetails = () => {
     }
 
     useEffect(() => {
-        const room = rooms.find(room => room._id === id);
-        room && setRoom(room);
-        room && setMainImage(room.images[0]);
-    }, [rooms]);
+        const foundRoom = rooms.find(room => room._id === id);
+        // Use found room from API or fallback to dummy data
+        const displayRoom = foundRoom || dummyRoom;
+        setRoom(displayRoom);
+        setMainImage(displayRoom.images[0]);
+    }, [rooms, id]);
 
     return room && (
         <div className='py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32'>
