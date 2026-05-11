@@ -41,7 +41,7 @@ const AllRooms = () => {
                 city: 'Paris',
                 address: '123 Champs-Élysées, Paris, France'
             },
-            amenities: ['Free Wifi', 'Free Breakfast', 'Room Service']
+            amenities: ['Free WiFi', 'Free Breakfast', 'Room Service']
         },
         {
             _id: '2',
@@ -54,7 +54,7 @@ const AllRooms = () => {
                 city: 'Maldives',
                 address: '456 Beach Road, Malé, Maldives'
             },
-            amenities: ['Free Wifi', 'Pool', 'Mountain View']
+            amenities: ['Free WiFi', 'Pool Access', 'Mountain View']
         },
         {
             _id: '3',
