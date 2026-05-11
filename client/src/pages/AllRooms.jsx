@@ -172,8 +172,8 @@ const AllRooms = () => {
     }
 
     return (
-        <div className='flex flex-col-reverse lg:flex-row items-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32'>
-            <div>
+        <div className='flex flex-col-reverse lg:flex-row items-start lg:items-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32'>
+            <div className='w-full max-w-2xl lg:max-w-none'>
                 {/* Main Title */}
                 <div className="flex flex-col items-start text-left">
                     <h1 className='font-playfair text-4xl md:text-[40px]'>Hotel Rooms</h1>
@@ -181,7 +181,7 @@ const AllRooms = () => {
                 </div>
 
                 {filteredRooms.map((room) => (
-                    <div key={room._id} className='flex flex-col md:flex-row items-start py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0'>
+                    <div key={room._id} className='flex flex-col md:flex-row items-center md:items-start py-10 gap-6 border-b border-gray-300 last:pb-30 last:border-0'>
                         {/* Room Image */}
                         <img title='View Room Details' onClick={() => { navigate(`/rooms/${room._id}`); scrollTo(0, 0) }} src={room.images[0]} alt="hotel-img" className='max-h-65 md:w-1/2 rounded-xl shadow-lg object-cover cursor-pointer' />
                         <div className='md:w-1/2 flex flex-col gap-2'>
