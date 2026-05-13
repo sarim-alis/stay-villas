@@ -8,6 +8,45 @@ const ListRoom = () => {
     const { axios, getToken, user } = useAppContext()
     const [rooms, setRooms] = React.useState([])
 
+    // Dummy rooms data for testing
+    const dummyRooms = [
+        {
+            _id: '1',
+            roomType: 'Luxury Room',
+            pricePerNight: 1200,
+            amenities: ['Free WiFi', 'Free Breakfast', 'Room Service', 'Mountain View', 'Pool Access'],
+            isAvailable: true
+        },
+        {
+            _id: '2',
+            roomType: 'Double Bed',
+            pricePerNight: 800,
+            amenities: ['Free WiFi', 'Pool Access', 'Mountain View'],
+            isAvailable: false
+        },
+        {
+            _id: '3',
+            roomType: 'Family Suite',
+            pricePerNight: 1500,
+            amenities: ['Free Breakfast', 'Room Service', 'Mountain View', 'Pool Access'],
+            isAvailable: true
+        },
+        {
+            _id: '4',
+            roomType: 'Single Bed',
+            pricePerNight: 600,
+            amenities: ['Free WiFi', 'Room Service'],
+            isAvailable: true
+        },
+        {
+            _id: '5',
+            roomType: 'Executive Suite',
+            pricePerNight: 2000,
+            amenities: ['Free WiFi', 'Free Breakfast', 'Room Service', 'Mountain View', 'Pool Access', 'Spa Access'],
+            isAvailable: false
+        }
+    ];
+
     // Fetch Rooms of the Hotel Owner
     const fetchRooms = async () => {
         try {
@@ -41,10 +80,13 @@ const ListRoom = () => {
         }
     }, [user])
 
+    // Use dummy rooms if no rooms available from API
+    const displayRooms = rooms.length > 0 ? rooms : dummyRooms;
+
     return (
         <div>
             <Title align='left' font='outfit' title='Room Listings' subTitle='View, edit, or manage all listed rooms. Keep the information up-to-date to provide the best experience for users.' />
-            <p className='text-gray-500 mt-8'>Total Hotels</p>
+            <p className='text-gray-500 mt-8'>Total Hotels: {displayRooms.length}</p>
             {/* Table with heads User Name, Room Name, Amount Paid, Payment Status */}
             <div className='w-full max-w-3xl text-left border border-gray-300 rounded-lg max-h-80 overflow-y-scroll mt-3'>
                 <table className='w-full' >
@@ -58,7 +100,7 @@ const ListRoom = () => {
                     </thead>
                     <tbody className='text-sm'>
                         {
-                            rooms.map((item, index) => (
+                            displayRooms.map((item, index) => (
                                 <tr key={index}>
                                     <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>{item.roomType}</td>
                                     <td className='py-3 px-4 text-gray-400 border-t border-gray-300 max-sm:hidden'>{item.amenities.join(', ')}</td>
