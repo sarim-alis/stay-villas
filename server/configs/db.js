@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const connectDB = async () => {
 
     try {
-        mongoose.connection.on('connected', () => console.log("Database Connected"));
+        mongoose.connection.on('connected', () => console.log("Mango connected 🥭🍭⭐🍊🔰"));
         await mongoose.connect(`${process.env.MONGODB_URI}/hotel-booking`);
     } catch (error) {
         console.error(error.message);
@@ -12,4 +12,3 @@ const connectDB = async () => {
 };
 
 export default connectDB;
-// Note: Do not use the '@' symbol in your database user's password.
