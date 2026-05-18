@@ -57,9 +57,9 @@ const Navbar = () => {
                     </NavLink>
                 ))}
                 {
-                    user && (
-                        <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`} onClick={() => isOwner ? navigate('/owner') : setShowHotelReg(true)}>
-                            {isOwner ? 'Dashboard' : 'List Your Hotel'}
+                    user && isOwner && (
+                        <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`} onClick={() => navigate('/owner')}>
+                            Dashboard
                         </button>
                     )
                 }
@@ -102,9 +102,11 @@ const Navbar = () => {
                         <NavLink to="/my-bookings" onClick={() => setIsMenuOpen(false)}>
                             My Bookings
                         </NavLink>
-                        <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all" onClick={() => isOwner ? navigate('/owner') : setShowHotelReg(true)}>
-                            {isOwner ? 'Dashboard' : 'List Your Hotel'}
-                        </button>
+                        {isOwner && (
+                            <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all" onClick={() => navigate('/owner')}>
+                                Dashboard
+                            </button>
+                        )}
                     </>
                 )}
 
