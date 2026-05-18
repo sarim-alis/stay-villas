@@ -1,3 +1,4 @@
+// Imports.
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -5,21 +6,20 @@ import { toast } from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 
+// Configs.
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
-
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-
+    // States.
     const currency = import.meta.env.VITE_CURRENCY || "$";
     const navigate = useNavigate();
     const { user } = useUser();
     const { getToken } = useAuth()
-
     const [isOwner, setIsOwner] = useState(false);
     const [showHotelReg, setShowHotelReg] = useState(false);
     const [rooms, setRooms] = useState([]);
-    const [searchedCities, setSearchedCities] = useState([]); // max 3 recent searched cities
+    const [searchedCities, setSearchedCities] = useState([]);
 
     const facilityIcons = {
         "Free WiFi": assets.freeWifiIcon,
@@ -29,6 +29,7 @@ export const AppProvider = ({ children }) => {
         "Pool Access": assets.poolIcon,
     };
 
+    // Fetch user.
     const fetchUser = async () => {
         try {
             const { data } = await axios.get('/api/user', { headers: { Authorization: `Bearer ${await getToken()}` } })
@@ -36,8 +37,6 @@ export const AppProvider = ({ children }) => {
                 setIsOwner(data.role === "hotelOwner");
                 setSearchedCities(data.recentSearchedCities)
             } else {
-                // Retry Fetching User Details after 5 seconds
-                // Useful when user creates account using email & password
                 setTimeout(() => {
                     fetchUser();
                 }, 2000);
@@ -47,6 +46,7 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    // Fetch rooms.
     const fetchRooms = async () => {
         try {
             const { data } = await axios.get('/api/rooms')
