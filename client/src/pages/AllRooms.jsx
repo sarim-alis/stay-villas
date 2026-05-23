@@ -68,6 +68,19 @@ const AllRooms = () => {
                 address: '789 Alpine Street, Zurich, Switzerland'
             },
             amenities: ['Free Breakfast', 'Room Service', 'Mountain View']
+        },
+        {
+            _id: '4',
+            roomType: 'Deluxe Suite',
+            pricePerNight: 950,
+            createdAt: '2024-04-05',
+            images: ['https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800'],
+            hotel: {
+                name: 'Seaside Resort',
+                city: 'Bali',
+                address: '321 Beach Avenue, Seminyak, Bali'
+            },
+            amenities: ['Free WiFi', 'Pool Access', 'Free Breakfast', 'Room Service']
         }
     ];
 
