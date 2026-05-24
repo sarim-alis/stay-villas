@@ -37,11 +37,11 @@ export const stripeWebhooks = async (request, response) => {
     // Mark Payment as Paid
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId, 
-      { isPaid: true, paymentMethod: "Stripe" },
+      { isPaid: true, paymentMethod: "Stripe", status: "Completed" },
       { new: true }
     );
 
-    console.log('Booking updated successfully:', updatedBooking?._id, 'isPaid:', updatedBooking?.isPaid);
+    console.log('Booking updated successfully:', updatedBooking?._id, 'isPaid:', updatedBooking?.isPaid, 'status:', updatedBooking?.status);
   } else if (event.type === "charge.updated") {
     const charge = event.data.object;
     const chargeId = charge.id;
@@ -63,11 +63,11 @@ export const stripeWebhooks = async (request, response) => {
         // Mark Payment as Paid
         const updatedBooking = await Booking.findByIdAndUpdate(
           bookingId, 
-          { isPaid: true, paymentMethod: "Stripe" },
+          { isPaid: true, paymentMethod: "Stripe", status: "Completed" },
           { new: true }
         );
 
-        console.log('Booking updated successfully:', updatedBooking?._id, 'isPaid:', updatedBooking?.isPaid);
+        console.log('Booking updated successfully:', updatedBooking?._id, 'isPaid:', updatedBooking?.isPaid, 'status:', updatedBooking?.status);
       } else {
         console.log('No session found for payment_intent:', charge.payment_intent);
       }
