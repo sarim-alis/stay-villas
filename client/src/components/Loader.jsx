@@ -10,7 +10,7 @@ const Loader = () => {
   useEffect(() => {
     if (nextUrl) {
       setTimeout(() => {
-        navigate(`/${nextUrl}`);
+        navigate(`/${nextUrl}?payment=success`);
       }, 8000);
     }
   }, [nextUrl]);

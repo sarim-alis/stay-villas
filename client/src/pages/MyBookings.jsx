@@ -3,11 +3,13 @@ import Title from '../components/Title'
 import { assets } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
+import { useSearchParams } from 'react-router-dom'
 
 const MyBookings = () => {
 
     const { axios, getToken, user } = useAppContext();
     const [bookings, setBookings] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // Dummy bookings data for testing
     const dummyBookings = [
@@ -94,6 +96,30 @@ const MyBookings = () => {
             fetchUserBookings();
         }
     }, [user]);
+
+    useEffect(() => {
+        const paymentStatus = searchParams.get('payment');
+        if (paymentStatus === 'success' && user) {
+            let attempts = 0;
+            const maxAttempts = 5;
+            const pollInterval = 2000;
+
+            const pollBookings = setInterval(async () => {
+                attempts++;
+                await fetchUserBookings();
+                
+                if (attempts >= maxAttempts) {
+                    clearInterval(pollBookings);
+                    setSearchParams({});
+                }
+            }, pollInterval);
+
+            return () => {
+                clearInterval(pollBookings);
+                setSearchParams({});
+            };
+        }
+    }, [searchParams, user]);
 
     // Use dummy bookings if no bookings available from API
     const displayBookings = bookings.length > 0 ? bookings : dummyBookings;
