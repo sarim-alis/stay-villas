@@ -3,6 +3,7 @@ import { assets } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import StarRating from '../components/StarRating'
 import { useSearchParams } from 'react-router-dom'
+import Loader from '../components/Loader'
 
 const CheckBox = ({ label, selected = true, onChange = () => { } }) => {
     return (
@@ -28,64 +29,6 @@ const AllRooms = () => {
 
     const { facilityIcons, navigate, rooms, currency } = useAppContext();
 
-    // Dummy data for testing
-    const dummyRooms = [
-        {
-            _id: '1',
-            roomType: 'Luxury Room',
-            pricePerNight: 1200,
-            createdAt: '2024-01-15',
-            images: ['https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800'],
-            hotel: {
-                name: 'Grand Palace Hotel',
-                city: 'Paris',
-                address: '123 Champs-Élysées, Paris, France'
-            },
-            amenities: ['Free WiFi', 'Free Breakfast', 'Room Service']
-        },
-        {
-            _id: '2',
-            roomType: 'Double Bed',
-            pricePerNight: 800,
-            createdAt: '2024-02-20',
-            images: ['https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800'],
-            hotel: {
-                name: 'Ocean View Resort',
-                city: 'Maldives',
-                address: '456 Beach Road, Malé, Maldives'
-            },
-            amenities: ['Free WiFi', 'Pool Access', 'Mountain View']
-        },
-        {
-            _id: '3',
-            roomType: 'Family Suite',
-            pricePerNight: 1500,
-            createdAt: '2024-03-10',
-            images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800'],
-            hotel: {
-                name: 'Mountain Lodge',
-                city: 'Switzerland',
-                address: '789 Alpine Street, Zurich, Switzerland'
-            },
-            amenities: ['Free Breakfast', 'Room Service', 'Mountain View']
-        },
-        {
-            _id: '4',
-            roomType: 'Deluxe Suite',
-            pricePerNight: 950,
-            createdAt: '2024-04-05',
-            images: ['https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800'],
-            hotel: {
-                name: 'Seaside Resort',
-                city: 'Bali',
-                address: '321 Beach Avenue, Seminyak, Bali'
-            },
-            amenities: ['Free WiFi', 'Pool Access', 'Free Breakfast', 'Room Service']
-        }
-    ];
-
-    // Use dummy data if rooms array is empty
-    const displayRooms = rooms.length > 0 ? rooms : dummyRooms;
     const [openFilters, setOpenFilters] = useState(false);
 
     // State for managing the selected filters
@@ -169,10 +112,10 @@ const AllRooms = () => {
 
     // Filter and sort rooms based on the selected filters and sort option
     const filteredRooms = useMemo(() => {
-        return displayRooms
+        return rooms
             .filter(room => matchesRoomType(room) && matchesPriceRange(room) && filterDestination(room))
             .sort(sortRooms);
-    }, [displayRooms, selectedFilters, selectedSort, searchParams]);
+    }, [rooms, selectedFilters, selectedSort, searchParams]);
 
     // Clear all filters
     const clearFilters = () => {
@@ -182,6 +125,10 @@ const AllRooms = () => {
         });
         setSelectedSort('')
         setSearchParams({});
+    }
+
+    if (!rooms || rooms.length === 0) {
+        return <Loader />;
     }
 
     return (
