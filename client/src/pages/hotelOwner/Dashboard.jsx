@@ -2,67 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { assets } from '../../assets/assets'
 import Title from '../../components/Title';
 import { useAppContext } from '../../context/AppContext';
+import Loader from '../../components/Loader';
 
 const Dashboard = () => {
 
     const { currency, user, getToken, toast, axios } = useAppContext();
-
-    // Dummy dashboard data for testing
-    const dummyDashboardData = {
-        bookings: [
-            {
-                user: {
-                    username: "John Smith"
-                },
-                room: {
-                    roomType: "Luxury Room"
-                },
-                totalPrice: 1200,
-                isPaid: true
-            },
-            {
-                user: {
-                    username: "Emma Wilson"
-                },
-                room: {
-                    roomType: "Double Bed"
-                },
-                totalPrice: 800,
-                isPaid: false
-            },
-            {
-                user: {
-                    username: "Michael Brown"
-                },
-                room: {
-                    roomType: "Family Suite"
-                },
-                totalPrice: 1500,
-                isPaid: true
-            },
-            {
-                user: {
-                    username: "Sarah Davis"
-                },
-                room: {
-                    roomType: "Single Bed"
-                },
-                totalPrice: 600,
-                isPaid: false
-            }
-        ],
-        totalBookings: 4,
-        totalRevenue: 3500,
-    };
 
     const [dashboardData, setDashboardData] = useState({
         bookings: [],
         totalBookings: 0,
         totalRevenue: 0,
     });
+    const [loading, setLoading] = useState(true);
 
     const fetchDashboardData = async () => {
         try {
+            setLoading(true);
             const { data } = await axios.get('/api/bookings/hotel', { headers: { Authorization: `Bearer ${await getToken()}` } })
             if (data.success) {
                 setDashboardData(data.dashboardData)
@@ -71,6 +26,8 @@ const Dashboard = () => {
             }
         } catch (error) {
             toast.error(error.message)
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -80,8 +37,9 @@ const Dashboard = () => {
         }
     }, [user]);
 
-    // Use dummy data if no bookings available from API
-    const displayData = dashboardData.bookings.length > 0 ? dashboardData : dummyDashboardData;
+    if (loading) {
+        return <Loader />;
+    }
 
     return (
         <div>
@@ -91,14 +49,14 @@ const Dashboard = () => {
                     <img className='max-sm:hidden h-10' src={assets.totalBookingIcon} alt="" />
                     <div className='flex flex-col sm:ml-4 font-medium'>
                         <p className='text-blue-500 text-lg'>Total Bookings</p>
-                        <p className='text-neutral-400 text-base'>{ displayData.totalBookings }</p>
+                        <p className='text-neutral-400 text-base'>{ dashboardData.totalBookings }</p>
                     </div>
                 </div>
                 <div className='bg-primary/3 border border-primary/10 rounded flex p-4 pr-8'>
                     <img className='max-sm:hidden h-10' src={assets.totalRevenueIcon} alt="" />
                     <div className='flex flex-col sm:ml-4 font-medium'>
                         <p className='text-blue-500 text-lg'>Total Revenue</p>
-                        <p className='text-neutral-400 text-base'>{currency} { displayData.totalRevenue }</p>
+                        <p className='text-neutral-400 text-base'>{currency} { dashboardData.totalRevenue }</p>
                     </div>
                 </div>
             </div>
@@ -117,7 +75,13 @@ const Dashboard = () => {
                     </thead>
                     <tbody className='text-sm'>
                         {
-                            displayData.bookings.map((item, index) => (
+                            dashboardData.bookings.length === 0 ? (
+                                <tr>
+                                    <td colSpan="4" className="py-8 text-center text-gray-500">
+                                        No bookings yet
+                                    </td>
+                                </tr>
+                            ) : dashboardData.bookings.map((item, index) => (
                                 <tr key={index}>
                                     <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>{item.user.username}</td>
                                     <td className='py-3 px-4 text-gray-400 border-t border-gray-300 max-sm:hidden'>{item.room.roomType}</td>
