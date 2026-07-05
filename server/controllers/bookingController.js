@@ -39,7 +39,7 @@ export const checkAvailabilityAPI = async (req, res) => {
 export const createBooking = async (req, res) => {
   try {
 
-    const { room, checkInDate, checkOutDate, guests } = req.body;
+    const { room, checkInDate, checkOutDate, guests, paymentMethod } = req.body;
 
     const user = req.user._id;
 
@@ -74,6 +74,7 @@ export const createBooking = async (req, res) => {
       checkInDate,
       checkOutDate,
       totalPrice,
+      paymentMethod: paymentMethod || "Pay At Hotel",
     });
 
     const mailOptions = {
@@ -103,7 +104,7 @@ export const createBooking = async (req, res) => {
   } catch (error) {
     console.log(error);
     
-    res.json({ success: true, message: "Booking created successfully" });
+    res.json({ success: false, message: error.message || "Failed to create booking" });
   }
 };
 
