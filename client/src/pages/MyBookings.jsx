@@ -53,7 +53,7 @@ const MyBookings = () => {
         const paymentStatus = searchParams.get('payment');
         if (paymentStatus === 'success' && user) {
             let attempts = 0;
-            const maxAttempts = 5;
+            const maxAttempts = 1;
             const pollInterval = 2000;
 
             const pollBookings = setInterval(async () => {
