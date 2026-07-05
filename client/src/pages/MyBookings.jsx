@@ -52,24 +52,8 @@ const MyBookings = () => {
     useEffect(() => {
         const paymentStatus = searchParams.get('payment');
         if (paymentStatus === 'success' && user) {
-            let attempts = 0;
-            const maxAttempts = 0;
-            const pollInterval = 2000;
-
-            const pollBookings = setInterval(async () => {
-                attempts++;
-                await fetchUserBookings();
-                
-                if (attempts >= maxAttempts) {
-                    clearInterval(pollBookings);
-                    setSearchParams({});
-                }
-            }, pollInterval);
-
-            return () => {
-                clearInterval(pollBookings);
-                setSearchParams({});
-            };
+            toast.success('Payment successful!');
+            setSearchParams({});
         }
     }, [searchParams, user]);
 
